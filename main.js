@@ -14,16 +14,25 @@ function init() {
     // adding osm layer (map object)
     const openStreetMapStandard = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
+        noWrap: true,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
     
     // initialize the map
     const mymap = L.map(mapElement, {
         center: [-27.059125784374054, 134.03320312500003],
-        zoom: 5,
-        minZoom: 4,
+        zoom: 2,
+        minZoom: 1,
+        zoomSnap: 0.25,
+        zoomDelta: 0.25,
+        easeLinearity: 0.5,
+        worldCopyJump: true, 
         layers: [openStreetMapStandard] // sett your default map in here
     });
+
+    mymap.on('zoom', function(e){
+        console.log(e.target._zoom)
+    })
 
     // leaflet basemaps object
     const baseLayers = {
