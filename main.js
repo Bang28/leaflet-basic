@@ -81,4 +81,29 @@ function init() {
         window.alert(e.message)
     };
     mymap.on('locationerror', onLocationError);
+
+    // distance calculation demo
+    var counter = 0
+    var coordinates = []
+    mymap.on('click', function(e){
+        counter += 1;
+        let latlng = e.latlng;
+        coordinates.push(latlng)
+
+        let popup = L.popup({
+            autoClose: false,
+            closeOnClick: false,
+        }).setContent(String(counter))
+
+        L.marker(latlng)
+            .addTo(mymap)
+            .bindPopup(popup)
+            .openPopup()
+
+        if (counter >= 2){
+            let distance = mymap.distance(coordinates[0], coordinates[1])
+            console.log(distance)
+            coordinates.shift()
+        }
+    })
 }
