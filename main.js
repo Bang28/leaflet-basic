@@ -33,8 +33,8 @@ function init() {
 
     // overlays
     const perthBaseMapImage = './data/perth_image.png';
-    const perthBaseMapBounds = [[-35.49645605658415, 113.51074218750001], [-20.632784250388028, 130.07812500000003]]
-    const imagePerthOverlay = L.imageOverlay(perthBaseMapImage, perthBaseMapBounds).addTo(mymap)
+    const perthBaseMapBounds = [[-35.49645605658415, 113.51074218750001], [-20.632784250388028, 130.07812500000003]];
+    const imagePerthOverlay = L.imageOverlay(perthBaseMapImage, perthBaseMapBounds).addTo(mymap);
 
     // overlay object
     const overLayLayers = {
@@ -45,5 +45,18 @@ function init() {
     const layerControls = L.control.layers(baseLayers, overLayLayers, {
         collapsed: false,
         position: 'topright',
-    }).addTo(mymap)
+    }).addTo(mymap);
+
+    mymap.on('click', function(e){
+        console.log(e.latlng)
+    })
+    
+    // perth marker
+    const perthMarker = L.marker([-32.0546446905493, 115.87280273437501], {
+        title: 'Perth City',
+        opacity: 0.5
+    }).addTo(mymap);
+
+    const perthMarkerPopup = perthMarker.bindPopup('Perth City from the popup') //.openPopup(); for make auto open popup
+    const perthMarkerTooltip = perthMarker.bindTooltip("my tooltip text") //.openTooltip(); for make auto open tooltip
 }
