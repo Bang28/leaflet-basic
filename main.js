@@ -5,13 +5,13 @@ function init() {
     // get element by id from HTML
     const mapElement = document.getElementById('mapid')
     
-    // adding stadia map layer
+    // adding stadia map layer (map object)
     const stadiaMaps = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.{ext}', {
         attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         ext: 'png'
     });
 
-    // adding osm layer
+    // adding osm layer (map object)
     const openStreetMapStandard = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -19,20 +19,30 @@ function init() {
     
     // initialize the map
     const mymap = L.map(mapElement, {
-        center: [48, 14],
+        center: [-27.059125784374054, 134.03320312500003],
         zoom: 5,
         minZoom: 4,
         layers: [openStreetMapStandard] // sett your default map in here
     });
 
-    // leaflet layer control
+    // leaflet basemaps object
     const baseLayers = {
         '<b>OpenStreetMapStandard</b>': openStreetMapStandard,
         'StadiaMap': stadiaMaps
     };
 
-    // adding layer control to map
-    const layerControls = L.control.layers(baseLayers, {}, {
+    // overlays
+    const perthBaseMapImage = './data/perth_image.png';
+    const perthBaseMapBounds = [[-35.49645605658415, 113.51074218750001], [-20.632784250388028, 130.07812500000003]]
+    const imagePerthOverlay = L.imageOverlay(perthBaseMapImage, perthBaseMapBounds).addTo(mymap)
+
+    // overlay object
+    const overLayLayers = {
+        'Perth Image': imagePerthOverlay,
+    }
+    
+    // leaflet layer control
+    const layerControls = L.control.layers(baseLayers, overLayLayers, {
         collapsed: false,
         position: 'topright',
     }).addTo(mymap)
