@@ -105,5 +105,8 @@ function init() {
             console.log(distance)
             coordinates.shift()
         }
-    })
+    });
+
+    console.log(mymap.dragging.disable())
+    console.log(mymap.dragging.enabled())
 }
