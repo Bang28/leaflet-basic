@@ -82,6 +82,14 @@ function init() {
     };
     mymap.on('locationerror', onLocationError);
 
+    // custom marker icon
+    const myCustomIcon = L.icon({
+        iconUrl: './data/icon_point.png',
+        iconSize: [25, 35],
+        iconAnchor: [13, 35],
+        popupAnchor: [0, -20]
+
+    })
     // distance calculation demo
     var counter = 0
     var coordinates = []
@@ -95,7 +103,7 @@ function init() {
             closeOnClick: false,
         }).setContent(String(counter))
 
-        L.marker(latlng)
+        L.marker(latlng, {icon: myCustomIcon})
             .addTo(mymap)
             .bindPopup(popup)
             .openPopup()
