@@ -30,10 +30,6 @@ function init() {
         layers: [openStreetMapStandard] // sett your default map in here
     });
 
-    mymap.on('zoom', function(e){
-        console.log(e.target._zoom)
-    })
-
     // leaflet basemaps object
     const baseLayers = {
         '<b>OpenStreetMapStandard</b>': openStreetMapStandard,
@@ -43,7 +39,7 @@ function init() {
     // overlays
     const perthBaseMapImage = './data/perth_image.png';
     const perthBaseMapBounds = [[-35.49645605658415, 113.51074218750001], [-20.632784250388028, 130.07812500000003]];
-    const imagePerthOverlay = L.imageOverlay(perthBaseMapImage, perthBaseMapBounds).addTo(mymap);
+    const imagePerthOverlay = L.imageOverlay(perthBaseMapImage, perthBaseMapBounds);
 
     // overlay object
     const overLayLayers = {
@@ -55,10 +51,6 @@ function init() {
         collapsed: false,
         position: 'topright',
     }).addTo(mymap);
-
-    mymap.on('click', function(e){
-        console.log(e.latlng)
-    })
     
     // perth marker
     const perthMarker = L.marker([-32.0546446905493, 115.87280273437501], {
@@ -68,4 +60,25 @@ function init() {
 
     const perthMarkerPopup = perthMarker.bindPopup('Perth City from the popup') //.openPopup(); for make auto open popup
     const perthMarkerTooltip = perthMarker.bindTooltip("my tooltip text") //.openTooltip(); for make auto open tooltip
+    
+    // Geolocation API
+    mymap.locate({
+        setView: true, 
+        maxZoom: 18
+    });
+
+    function onLocationFound(e){
+        var radius = e.accuracy.toFixed(2)
+
+        var locationMarker = L.marker(e.latlng).addTo(mymap)
+            .bindPopup('You are within ' + radius + ' meters from this point').openPopup();
+
+        var locationCircle = L.circle(e.latlng, radius).addTo(mymap);
+    };
+    mymap.on('locationfound', onLocationFound);
+
+    function onLocationError(e){
+        window.alert(e.message)
+    };
+    mymap.on('locationerror', onLocationError);
 }
