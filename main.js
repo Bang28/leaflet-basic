@@ -60,70 +60,27 @@ function init() {
 
     const perthMarkerPopup = perthMarker.bindPopup('Perth City from the popup') //.openPopup(); for make auto open popup
     const perthMarkerTooltip = perthMarker.bindTooltip("my tooltip text") //.openTooltip(); for make auto open tooltip
-    
-    // Geolocation API
-    mymap.locate({
-        setView: true, 
-        maxZoom: 18
-    });
 
-    function onLocationFound(e){
-        var radius = e.accuracy.toFixed(2)
+    // example drawing polyline
+    var latlngs = [
+        [45.51, -122.68],
+        [37.77, -122.43],
+        [34.04, -118.2]
+    ];
 
-        var locationMarker = L.marker(e.latlng).addTo(mymap)
-            .bindPopup('You are within ' + radius + ' meters from this point').openPopup();
+    var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
+    mymap.fitBounds(polyline.getBounds())
 
-        var locationCircle = L.circle(e.latlng, radius).addTo(mymap);
-    };
-    mymap.on('locationfound', onLocationFound);
+    // drawing polyline dynamically part 1
+    var lineCoordinates = [];
+    var drawPolyline = L.polyline([], {color: 'red'}).addTo(mymap);
 
-    function onLocationError(e){
-        window.alert(e.message)
-    };
-    mymap.on('locationerror', onLocationError);
-
-    // custom marker icon
-    /*const myCustomIcon = L.icon({
-        iconUrl: './data/icon_point.png',
-        iconSize: [25, 35],
-        iconAnchor: [13, 35],
-        popupAnchor: [0, -20]
-
-    });*/
-
-    // custom marker icon part 2
-    const myDivIcon = L.divIcon({
-        className: 'my-div-icon',
-        iconSize: [25, 35],
-        iconAnchor: [13, 35],
-        popupAnchor: [0, -20]
-    });
-    
-    // distance calculation demo
-    var counter = 0
-    var coordinates = []
     mymap.on('click', function(e){
-        counter += 1;
-        let latlng = e.latlng;
-        coordinates.push(latlng)
+        let latlng = e.latlng
+        lineCoordinates.push(latlng)
 
-        let popup = L.popup({
-            autoClose: false,
-            closeOnClick: false,
-        }).setContent(String(counter))
-
-        L.marker(latlng, {icon: myDivIcon})
-            .addTo(mymap)
-            .bindPopup(popup)
-            .openPopup()
-
-        if (counter >= 2){
-            let distance = mymap.distance(coordinates[0], coordinates[1])
-            console.log(distance)
-            coordinates.shift()
+        if (lineCoordinates.length > 1){
+            drawPolyline.setLatLngs(lineCoordinates)
         }
     });
-
-    // console.log(mymap.dragging.disable())
-    // console.log(mymap.dragging.enabled())
 }
