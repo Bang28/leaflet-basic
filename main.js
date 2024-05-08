@@ -47,7 +47,7 @@ function init() {
     }
     
     // leaflet layer control
-    const layerControls = L.control.layers(baseLayers, overLayLayers, {
+    const layerControl = L.control.layers(baseLayers, overLayLayers, {
         collapsed: false,
         position: 'topright',
     }).addTo(mymap);
@@ -55,8 +55,9 @@ function init() {
     // perth marker
     const perthMarker = L.marker([-32.0546446905493, 115.87280273437501], {
         title: 'Perth City',
-        opacity: 0.5
-    }).addTo(mymap);
+        opacity: 1
+    })
+    layerControl.addOverlay(perthMarker, 'Perth')
 
     const perthMarkerPopup = perthMarker.bindPopup('Perth City from the popup') //.openPopup(); for make auto open popup
     const perthMarkerTooltip = perthMarker.bindTooltip("my tooltip text") //.openTooltip(); for make auto open tooltip
@@ -134,7 +135,8 @@ function init() {
         .on('click', function(e){
             console.log('hey, you clicked on the featureGroup')
         })
-        .addTo(mymap);
+    
+    layerControl.addOverlay(featureGroup, 'Feature Group')
 
     featureGroup.bindPopup('Hi')
 
@@ -149,7 +151,7 @@ function init() {
     }
     
     // functon to add geoJson to the map
-    function addGeoJSONData(data){
+    function addGeoJSONData(data, layername){
         // you can write like this (with variable),
         let geoJSONlayer = L.geoJSON(data, {
             // circles
@@ -166,7 +168,8 @@ function init() {
         geoJSONlayer.bindPopup(function(layer){
             return layer.feature.properties.name
         })
-        geoJSONlayer.addTo(mymap)
+        // geoJSONlayer.addTo(mymap)
+        layerControl.addOverlay(geoJSONlayer, layername)
 
         // or like this
         // L.geoJSON(data, {})
@@ -177,21 +180,26 @@ function init() {
     };
     
     // fetch API
-    fetch('./data/europan_cities.geojson', {
-        method: 'GET',
-        mode: 'same-origin'
-    })
-        .then(function(response){
-            if (response.status === 200){
-                return response.json(response)
-            } else {
-                return new Error('fetch API could not fetch the data')
-            }
+    function fetchData(url, layername){
+        fetch(url, {
+            method: 'GET',
+            mode: 'same-origin'
         })
-        .then(function(geojson){
-            addGeoJSONData(geojson)
-        })
-        .catch(function(error){
-            console.log(error)
-        })
+            .then(function(response){
+                if (response.status === 200){
+                    return response.json(response)
+                } else {
+                    return new Error('fetch API could not fetch the data')
+                }
+            })
+            .then(function(geojson){
+                addGeoJSONData(geojson, layername)
+            })
+            .catch(function(error){
+                console.log(error)
+            })
+    };
+
+    fetchData('./data/europan_cities.geojson', 'European Cities')
+    fetchData('./data/southeast_cities.geojson', 'Southeast Cities')
 }
