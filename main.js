@@ -119,10 +119,15 @@ function init() {
         position: 'topleft'
     }).addTo(mymap);
 
-    // circle example
-    L.circle([50.5, 30.5], { radius: 100000 , color: 'red'}).addTo(mymap);
-    mymap.panTo([50.5, 30.5])
+    // svg overlay example
+    var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svgElement.setAttribute('xmlns', "http://www.w3.org/2000/svg");
+    svgElement.setAttribute('viewBox', "0 0 300 300");
+    svgElement.innerHTML = '<circle cx="150" cy="150" r="80" fill="black" />';
+    var svgElementBounds = [[-32.32427558887655, 129.11132812500003], [-19.228176737766248, 143.43750000000003]];
+    L.svgOverlay(svgElement, svgElementBounds).addTo(mymap);
 
-    L.circleMarker([40, 42], {radius: 10}).addTo(mymap)
-
+    mymap.on('click', function(e){
+        console.log(e.latlng)
+    })
 }
