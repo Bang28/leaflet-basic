@@ -14,15 +14,15 @@ function init() {
     // adding osm layer (map object)
     const openStreetMapStandard = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        noWrap: true,
+        // noWrap: true,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
     
     // initialize the map
     const mymap = L.map(mapElement, {
         center: [-27.059125784374054, 134.03320312500003],
-        zoom: 2,
-        minZoom: 1,
+        zoom: 4,
+        minZoom: 3,
         zoomSnap: 0.25,
         zoomDelta: 0.25,
         easeLinearity: 0.5,
@@ -61,26 +61,25 @@ function init() {
     const perthMarkerPopup = perthMarker.bindPopup('Perth City from the popup') //.openPopup(); for make auto open popup
     const perthMarkerTooltip = perthMarker.bindTooltip("my tooltip text") //.openTooltip(); for make auto open tooltip
 
-    // example drawing polyline
-    var latlngs = [
-        [45.51, -122.68],
-        [37.77, -122.43],
-        [34.04, -118.2]
-    ];
-
-    var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
-    mymap.fitBounds(polyline.getBounds())
-
-    // drawing polyline dynamically part 1
-    var lineCoordinates = [];
+    // drawing polyline dynamically part 2
     var drawPolyline = L.polyline([], {color: 'red'}).addTo(mymap);
-
+    
     mymap.on('click', function(e){
         let latlng = e.latlng
-        lineCoordinates.push(latlng)
+        drawPolyline.addLatLng(latlng)
+    });
+    
+    var masterPolyline = L.polyline([], {color: 'blue'}).addTo(mymap);
+    var masterLineCoordinates = []
+    mymap.on('dblclick', function(e){
+        let clickedAllCoordinates = drawPolyline.getLatLngs()
+        let clickedAllCoordinatesExceptTheLastOne = clickedAllCoordinates.slice(0, clickedAllCoordinates.length - 1)
 
-        if (lineCoordinates.length > 1){
-            drawPolyline.setLatLngs(lineCoordinates)
-        }
+        masterLineCoordinates.push(clickedAllCoordinatesExceptTheLastOne)
+        masterPolyline.setLatLngs(masterLineCoordinates)
+
+        drawPolyline.setLatLngs([]) //reset line coordinates
+
+        console.log(masterPolyline.toGeoJSON()) //export data to GeoJSON
     });
 }
