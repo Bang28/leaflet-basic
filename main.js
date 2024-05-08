@@ -129,32 +129,16 @@ function init() {
     var circle = L.circle([50.5, 30.5], {radius: 100000, color:'red'});
     var secondCircle = L.circleMarker([40.5, 40,5], {radius: 10});
 
-    // layer group
-    var layerGroup = L.layerGroup([circle, secondCircle]).addTo(mymap);
-    layerGroup.addLayer(svgOverlay)
-    
-    layerGroup.eachLayer(function(layer){
-        let latLng;
+    // feature group
+    var featureGroup = L.featureGroup([circle, secondCircle, svgOverlay])
+        .on('click', function(e){
+            console.log('hey, you clicked on the featureGroup')
+        })
+        .addTo(mymap);
 
-        // if the layer is SVG, get the center of the bounds
-        if (layer instanceof L.ImageOverlay){
-            latLng = layer.getBounds().getCenter()    
-        }
+    featureGroup.bindPopup('Hi')
 
-        // if the layer is circle, get the lat and long 
-        if (layer instanceof L.CircleMarker){
-            latLng = layer.getLatLng()
-        }
-
-        let latitude = latLng.lat;
-        let longtitude = latLng.lng;
-
-        let popup = L.popup({
-            autoClose: false,
-            closeOnClick: false,
-        }).setContent('Latitude is ' + latitude + ' Longtitude is ' + longtitude)
-
-        layer.bindPopup(popup).openPopup(latLng)
+    featureGroup.setStyle({
+        color: 'green'
     });
-
 }
