@@ -63,10 +63,13 @@ function init() {
 
     // drawing polygon dynamically part 1  
     var polygon = L.polygon([], { color: 'red' }).addTo(mymap);
-    mymap.on('click', function(e){
-        let latlng = e.latlng
-        polygon.addLatLng(latlng)
-    });
+    // draw polygon function
+    function drawPolygon(){
+        mymap.on('click', function(e){
+            let latlng = e.latlng
+            polygon.addLatLng(latlng)
+        });
+    }
     
     var masterPolygon = L.polygon([], {color: 'blue'}).addTo(mymap);
     var masterPolygonCoordinates = []
@@ -78,6 +81,13 @@ function init() {
         masterPolygon.setLatLngs(masterPolygonCoordinates)
 
         polygon.setLatLngs([]) //reset lat and long values in the polygon object
+
+        mymap.off('click')
+
+        let drawPolygonButtonElement = document.querySelector('.draw-polygon');
+        if (drawPolygonButtonElement){
+            L.DomUtil.removeClass(drawPolygonButtonElement, 'draw-active')
+        }
     });
 
     // custom draw geometry plugin "drawing polygon dynamically part 2"
@@ -85,6 +95,15 @@ function init() {
         onAdd: function(mymap){
             var div = L.DomUtil.create('button', 'draw-polygon');
             div.innerHTML = 'Draw a Polygon'
+
+            L.DomEvent.on(div, 'click', function(e){
+                L.DomEvent.stopPropagation(e)
+                
+                let toggleDrawPolygonButton = div.classList.toggle('draw-active')
+                if (toggleDrawPolygonButton){
+                    drawPolygon()
+                }
+            })
 
             return div
         }

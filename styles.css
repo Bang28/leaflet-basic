@@ -17,3 +17,7 @@ body {
     background-image: url(./data/icon_point.png);
 
 }
+
+.draw-active {
+    background-color: red;
+}
