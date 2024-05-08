@@ -123,7 +123,7 @@ function init() {
     // image overlay
     var svgURL = './data/smoking-mouse.svg';
     var svgBounds = [[-32.32427558887655, 129.11132812500003], [-19.228176737766248, 143.43750000000003]];
-    var svgOverlay = L.imageOverlay(svgURL, svgBounds)
+    var svgOverlay = L.imageOverlay(svgURL, svgBounds, {interactive: true})
 
     // circle layer
     var circle = L.circle([50.5, 30.5], {radius: 100000, color:'red'});
@@ -132,8 +132,29 @@ function init() {
     // layer group
     var layerGroup = L.layerGroup([circle, secondCircle]).addTo(mymap);
     layerGroup.addLayer(svgOverlay)
+    
+    layerGroup.eachLayer(function(layer){
+        let latLng;
 
-    layerGroup.on('click', function(e){
-        console.log('yeah, you clicked on the layer group ')
-    })
+        // if the layer is SVG, get the center of the bounds
+        if (layer instanceof L.ImageOverlay){
+            latLng = layer.getBounds().getCenter()    
+        }
+
+        // if the layer is circle, get the lat and long 
+        if (layer instanceof L.CircleMarker){
+            latLng = layer.getLatLng()
+        }
+
+        let latitude = latLng.lat;
+        let longtitude = latLng.lng;
+
+        let popup = L.popup({
+            autoClose: false,
+            closeOnClick: false,
+        }).setContent('Latitude is ' + latitude + ' Longtitude is ' + longtitude)
+
+        layer.bindPopup(popup).openPopup(latLng)
+    });
+
 }
