@@ -118,4 +118,15 @@ function init() {
     var myCustomTool = new L.Control.CustomDrawGeometryTools({
         position: 'topleft'
     }).addTo(mymap);
+
+    // define rectangle geographical bounds
+    var corner1 = L.latLng(40.712, -74.227),
+        corner2 = L.latLng(40.774, -74.125),
+        bounds = L.latLngBounds(corner1, corner2);
+
+    // create an orange rectangle
+    L.rectangle(bounds, { color: "#ff7800", weight: 1 }).addTo(mymap);
+
+    // zoom the mymap to the rectangle bounds
+    mymap.fitBounds(bounds);
 }
