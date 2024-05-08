@@ -142,13 +142,45 @@ function init() {
         color: 'green'
     });
 
+    // geoJson - point style
+    var pointStyle = {
+        radius: 50000,
+        color: 'black'
+    }
+    
     // functon to add geoJson to the map
     function addGeoJSONData(data){
-        console.log(data)
+        // you can write like this (with variable),
+        let geoJSONlayer = L.geoJSON(data, {
+            // circles
+            pointToLayer: function(feature, latlng){
+                return L.circle(latlng, pointStyle)
+            },
+            // filter option
+            filter: function(feature){
+                if (feature.properties.active === 'true'){
+                    return feature
+                }
+            }
+        })
+        geoJSONlayer.bindPopup(function(layer){
+            return layer.feature.properties.name
+        })
+        geoJSONlayer.addTo(mymap)
+
+        // or like this
+        // L.geoJSON(data, {})
+        //     .bindPopup(function(layer){
+        //         return layer.feature.properties.name
+        //     })
+        //     .addTo(mymap)
     };
     
     // fetch API
-    fetch('./data/europan_cities.geojson', {})
+    fetch('./data/europan_cities.geojson', {
+        method: 'GET',
+        mode: 'same-origin'
+    })
         .then(function(response){
             if (response.status === 200){
                 return response.json(response)
