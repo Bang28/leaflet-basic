@@ -22,7 +22,7 @@ function init() {
     const mymap = L.map(mapElement, {
         center: [-27.059125784374054, 134.03320312500003],
         zoom: 4,
-        minZoom: 3,
+        minZoom: 1,
         zoomSnap: 0.25,
         zoomDelta: 0.25,
         easeLinearity: 0.5,
@@ -119,14 +119,10 @@ function init() {
         position: 'topleft'
     }).addTo(mymap);
 
-    // define rectangle geographical bounds
-    var corner1 = L.latLng(40.712, -74.227),
-        corner2 = L.latLng(40.774, -74.125),
-        bounds = L.latLngBounds(corner1, corner2);
+    // circle example
+    L.circle([50.5, 30.5], { radius: 100000 , color: 'red'}).addTo(mymap);
+    mymap.panTo([50.5, 30.5])
 
-    // create an orange rectangle
-    L.rectangle(bounds, { color: "#ff7800", weight: 1 }).addTo(mymap);
+    L.circleMarker([40, 42], {radius: 10}).addTo(mymap)
 
-    // zoom the mymap to the rectangle bounds
-    mymap.fitBounds(bounds);
 }
