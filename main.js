@@ -141,4 +141,25 @@ function init() {
     featureGroup.setStyle({
         color: 'green'
     });
+
+    // functon to add geoJson to the map
+    function addGeoJSONData(data){
+        console.log(data)
+    };
+    
+    // fetch API
+    fetch('./data/europan_cities.geojson', {})
+        .then(function(response){
+            if (response.status === 200){
+                return response.json(response)
+            } else {
+                return new Error('fetch API could not fetch the data')
+            }
+        })
+        .then(function(geojson){
+            addGeoJSONData(geojson)
+        })
+        .catch(function(error){
+            console.log(error)
+        })
 }
