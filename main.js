@@ -79,4 +79,24 @@ function init() {
 
         polygon.setLatLngs([]) //reset lat and long values in the polygon object
     });
+
+    // custom draw geometry plugin "drawing polygon dynamically part 2"
+    L.Control.CustomDrawGeometryTools = L.Control.extend({
+        onAdd: function(mymap){
+            var div = L.DomUtil.create('button', 'draw-polygon');
+            div.innerHTML = 'Draw a Polygon'
+
+            return div
+        }
+    });
+
+    /*L.control.customdrawgeometrytools = function(opts){
+        return new L.Control.CustomDrawGeometryTools(opts)
+    };
+    L.control.customdrawgeometrytools({position: 'topleft'}).addTo(mymap)*/
+
+    // this code is the same as the code above
+    var myCustomTool = new L.Control.CustomDrawGeometryTools({
+        position: 'topleft'
+    }).addTo(mymap);
 }
