@@ -62,7 +62,10 @@ function init() {
     const perthMarkerTooltip = perthMarker.bindTooltip("my tooltip text") //.openTooltip(); for make auto open tooltip
 
     // drawing polyline dynamically part 2
-    var drawPolyline = L.polyline([], {color: 'red'}).addTo(mymap);
+    var drawPolyline = L.polyline([], {
+        color: 'red',
+        smoothFactor: 0.1, //default 1.0
+    }).addTo(mymap);
     
     mymap.on('click', function(e){
         let latlng = e.latlng
