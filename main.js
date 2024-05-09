@@ -153,6 +153,15 @@ function init() {
         fillColor: 'green',
         fillOpacity: 0.5
     }
+    // hoverstyle
+    var hoverStyle = {
+        radius: 50000,
+        color: 'blue',
+        stroke: true,
+        wigth: 6,
+        fillColor: 'yellow',
+        fillOpacity: 0.5
+    }
     
     // functon to add geoJson to the map
     function addGeoJSONData(data, layername){
@@ -172,7 +181,18 @@ function init() {
         geoJSONlayer.bindPopup(function(layer){
             return layer.feature.properties.name
         })
-        // geoJSONlayer.addTo(mymap)
+        geoJSONlayer.addTo(mymap)
+
+        // mouseover event - set hoverstyle
+        geoJSONlayer.on('mouseover', function(e){
+            e.layer.setStyle(hoverStyle)
+        })
+        
+        // mouseout event - set default style
+        geoJSONlayer.on('mouseout', function(e){
+            geoJSONlayer.resetStyle(e.layer)
+        })
+        
         layerControl.addOverlay(geoJSONlayer, layername)
 
         // or like this
