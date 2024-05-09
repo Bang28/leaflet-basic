@@ -165,6 +165,32 @@ function init() {
     
     // functon to add geoJson to the map
     function addGeoJSONData(data, layername){
+        // example layer order part 2
+        /*let javaIslandPane = mymap.createPane('java-island');
+        let indonesianCitiesPane = mymap.createPane('indonesian-cities')
+        let geoJSONLayer;
+
+        switch (layername){
+            case 'Indonesian Cities':
+                mymap.getPane('indonesian-cities').style.zIndex = 401
+                geoJSONLayer = L.geoJSON(data, {
+                    pane: 'indonesian-cities',
+                    style: { color: 'black', fillOpacity: 1 }
+                }).addTo(mymap);
+                break;
+
+            case 'Java Island':
+                mymap.getPane('java-island').style.zIndex = 400
+                geoJSONLayer = L.geoJSON(data, {
+                    pane: 'java-island',
+                    style: { color: 'green', fillOpacity: 1 }
+                }).addTo(mymap);
+                break;
+
+            default:
+                geoJSONLayer = L.geoJSON(data, {}).addTo(mymap)
+        }*/
+        
         // you can write like this (with variable),
         let geoJSONlayer = L.geoJSON(data, {
             // circles
@@ -235,7 +261,7 @@ function init() {
         //         return layer.feature.properties.name
         //     })
         //     .addTo(mymap)
-    };
+    }
     
     // fetch API
     function fetchData(url, layername){
@@ -262,4 +288,6 @@ function init() {
     fetchData('./data/southeast_cities.geojson', 'Southeast Cities')
     fetchData('./data/indonesian_major_roads.geojson', 'Indonesian Major Roads')
     fetchData('./data/indonesian_cities.geojson', 'Indonesian Cities')
+    // layer order part 2
+    // fetchData('./data/java_island.geojson', 'Java Island')
 }
