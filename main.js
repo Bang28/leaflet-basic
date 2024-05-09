@@ -190,8 +190,14 @@ function init() {
                 }
             },
 
-            // popup for layers
+            // popup for layers & style for polygons
             onEachFeature: function(feature, layer){
+                // style for pilygons
+                if (feature.geometry.type === 'Polygon'){
+                    layer.setStyle({color: 'red', fillOpacity: 0.5})
+                }
+
+                // popup for layers
                 if (feature.properties.name){
                     layer.bindPopup(feature.properties.name)
                 } else {
@@ -199,7 +205,7 @@ function init() {
                 }
             }
         })
-        
+
         geoJSONlayer.addTo(mymap)
 
         // mouseover event - set hoverstyle
@@ -250,4 +256,5 @@ function init() {
     fetchData('./data/europan_cities.geojson', 'European Cities')
     fetchData('./data/southeast_cities.geojson', 'Southeast Cities')
     fetchData('./data/indonesian_major_roads.geojson', 'Indonesian Major Roads')
+    fetchData('./data/indonesian_cities.geojson', 'Indonesian Cities')
 }
