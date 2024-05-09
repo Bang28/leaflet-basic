@@ -18,6 +18,12 @@ function init() {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
     
+    const openStreetMapStandard_Basic_V2 = L.tileLayer('https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=kQXJkJvo0vUB8ShEOBA2', {
+        maxZoom: 19,
+        // noWrap: true,
+        attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
+    });
+    
     // initialize the map
     const mymap = L.map(mapElement, {
         center: [-27.059125784374054, 134.03320312500003],
@@ -26,8 +32,11 @@ function init() {
         zoomSnap: 0.25,
         zoomDelta: 0.25,
         easeLinearity: 0.5,
-        worldCopyJump: true, 
-        layers: [openStreetMapStandard] // sett your default map in here
+        // worldCopyJump: true, 
+        // layers: [openStreetMapStandard], // sett your default map in here
+        layers: [openStreetMapStandard_Basic_V2], // sett your default map in here
+        // crs: L.CRS.EPSG3857,
+
     });
 
     // leaflet basemaps object
@@ -65,7 +74,7 @@ function init() {
     // video overlay
     var videoUrl = 'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
         videoBounds = [[32, -130], [13, -100]];
-        videoOverlay = L.videoOverlay(videoUrl, videoBounds).addTo(mymap);
+        videoOverlay = L.videoOverlay(videoUrl, videoBounds)
     
     layerControl.addOverlay(videoOverlay, 'Video Overlay')
     
