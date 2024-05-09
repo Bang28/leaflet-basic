@@ -147,7 +147,11 @@ function init() {
     // geoJson - point style
     var pointStyle = {
         radius: 50000,
-        color: 'black'
+        color: 'black',
+        stroke: true,
+        wigth: 6,
+        fillColor: 'green',
+        fillOpacity: 0.5
     }
     
     // functon to add geoJson to the map
