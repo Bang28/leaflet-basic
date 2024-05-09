@@ -62,6 +62,13 @@ function init() {
     const perthMarkerPopup = perthMarker.bindPopup('Perth City from the popup') //.openPopup(); for make auto open popup
     const perthMarkerTooltip = perthMarker.bindTooltip("my tooltip text") //.openTooltip(); for make auto open tooltip
 
+    // video overlay
+    var videoUrl = 'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
+        videoBounds = [[32, -130], [13, -100]];
+        videoOverlay = L.videoOverlay(videoUrl, videoBounds).addTo(mymap);
+    
+    layerControl.addOverlay(videoOverlay, 'Video Overlay')
+    
     // drawing polygon dynamically part 1  
     var polygon = L.polygon([], { color: 'red' }).addTo(mymap);
     // draw polygon function
