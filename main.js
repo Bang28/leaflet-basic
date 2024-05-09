@@ -208,6 +208,11 @@ function init() {
 
         geoJSONlayer.addTo(mymap)
 
+        // sending the Indonesian Cities layer to back of all other layers
+        if (layername === 'Indonesian Cities'){
+            geoJSONlayer.bringToBack()
+        }
+
         // mouseover event - set hoverstyle
         geoJSONlayer.on('mouseover', function(e){
             if (e.layer instanceof L.Circle){
