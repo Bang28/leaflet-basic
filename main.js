@@ -315,4 +315,14 @@ function init() {
 
     layerControl.addOverlay(wmsLayer, 'Acreage Release Areas')
     mymap.fitBounds([[-21.000000, 115.000000], [-11.000000, 130.500000]])
+
+    // WFS Layer
+    var WFSURL = 'https://services.ga.gov.au/gis/services/CW_1970_1980/MapServer/WFSServer?' +
+    'service=wfs&' +
+    'version=2.0.0&' +
+    'request=GetFeature&' +
+    'typeNames=CW_1970_1980:CW_1970_1980_Limits&' +
+    'srsName=EPSG::4326&' +
+    'outputFormat=GEOJSON'
+    
 }
