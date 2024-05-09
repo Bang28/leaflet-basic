@@ -169,7 +169,12 @@ function init() {
         let geoJSONlayer = L.geoJSON(data, {
             // circles
             pointToLayer: function(feature, latlng){
-                return L.circle(latlng, pointStyle)
+                switch (feature.properties.name){
+                    case 'Jakarta':
+                        return L.marker(latlng)
+                    default:
+                        return L.circle(latlng, pointStyle)
+                }
             },
             // filter option
             filter: function(feature){
@@ -185,12 +190,16 @@ function init() {
 
         // mouseover event - set hoverstyle
         geoJSONlayer.on('mouseover', function(e){
-            e.layer.setStyle(hoverStyle)
+            if (e.layer instanceof L.Circle){
+                e.layer.setStyle(hoverStyle)
+            }
         })
         
         // mouseout event - set default style
         geoJSONlayer.on('mouseout', function(e){
-            geoJSONlayer.resetStyle(e.layer)
+            if (e.layer instanceof L.Circle){
+                geoJSONlayer.resetStyle(e.layer)
+            }
         })
         
         layerControl.addOverlay(geoJSONlayer, layername)
