@@ -297,4 +297,22 @@ function init() {
     fetchData('./data/indonesian_cities.geojson', 'Indonesian Cities')
     // layer order part 2
     // fetchData('./data/java_island.geojson', 'Java Island')
+
+    // WMS Layer
+    var wmsURL = 'https://services.ga.gov.au/gis/services/2021GHG_AcreageReleaseAreas/MapServer/WmsServer?'
+    const wmsLayer = L.tileLayer.wms(wmsURL, {
+        layers: '2021GHG_AcreageReleaseAreas',
+        format: 'image/png',
+        transparent: true,
+        maxZoom: 20,
+        styles: 'default',
+        opacity: 1,
+        version: '1.3.0',
+        tileSize: 256,
+        bounds: [[-21.000000, 115.000000], [-11.000000, 130.500000]],
+        attribution: '© Commonwealth of Australia (Geoscience Australia) 2021. This product is released under the Creative Commons Attribution 4.0 International Licence. http://creativecommons.org/licenses/by/4.0/legalcode'
+    });
+
+    layerControl.addOverlay(wmsLayer, 'Acreage Release Areas')
+    mymap.fitBounds([[-21.000000, 115.000000], [-11.000000, 130.500000]])
 }
