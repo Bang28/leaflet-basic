@@ -324,5 +324,37 @@ function init() {
     'typeNames=CW_1970_1980:CW_1970_1980_Limits&' +
     'srsName=EPSG::4326&' +
     'outputFormat=GEOJSON'
+
+    function addWFSData(WFSData, layername){
+        let WFSLayer = L.geoJSON(WFSData, {
+            coordsToLatLng: function(coords){
+                return new L.LatLng(coords[0][1], coords[0][0])
+            }
+        }).addTo(mymap)
+
+        layerControl.addOverlay(WFSLayer, layername)
+    };
     
+    // fetch API
+    function fetchWFS(url, layername) {
+        fetch(url, {
+            method: 'GET',
+            mode: 'cors'
+        })
+            .then(function (response) {
+                if (response.status === 200) {
+                    return response.json(response)
+                } else {
+                    return new Error('fetch API could not fetch the data')
+                }
+            })
+            .then(function (geojson) {
+                addWFSData(geojson, layername)
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+    };
+
+    fetchWFS(WFSURL, 'Water Features of Australia')
 }
