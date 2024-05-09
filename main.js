@@ -181,11 +181,25 @@ function init() {
                 if (feature.properties.active === 'true'){
                     return feature
                 }
+            },
+
+            // line styling
+            style: function(feature){
+                if (feature.geometry.type === 'LineString'){
+                    return {color: 'orange', weight: 5}
+                }
+            },
+
+            // popup for layers
+            onEachFeature: function(feature, layer){
+                if (feature.properties.name){
+                    layer.bindPopup(feature.properties.name)
+                } else {
+                    layer.bindPopup('no content to show')
+                }
             }
         })
-        geoJSONlayer.bindPopup(function(layer){
-            return layer.feature.properties.name
-        })
+        
         geoJSONlayer.addTo(mymap)
 
         // mouseover event - set hoverstyle
@@ -235,4 +249,5 @@ function init() {
 
     fetchData('./data/europan_cities.geojson', 'European Cities')
     fetchData('./data/southeast_cities.geojson', 'Southeast Cities')
+    fetchData('./data/indonesian_major_roads.geojson', 'Indonesian Major Roads')
 }
