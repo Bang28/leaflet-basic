@@ -407,4 +407,17 @@ function init() {
     mymap.on('draw:created', function(e){
         drawnItems.addLayer(e.layer)
     })
+
+    // cluster example
+    var markers = L.markerClusterGroup({
+        spiderfyOnMaxZoom: true,
+        showCoverageOnHover: true,
+        zoomToBoundsOnClick: true
+    });
+    mymap.addLayer(markers)
+    for (let x = 0; x < 1000; x++){
+        let longitude = Math.random()*360 - 180;
+        let latitude = Math.random()*180 - 90;
+        markers.addLayer(L.marker([latitude, longitude]))
+    }
 }
