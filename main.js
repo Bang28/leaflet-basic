@@ -50,15 +50,15 @@ function init() {
         zoomDelta: 0.25,
         easeLinearity: 0.5,
         // worldCopyJump: true, 
-        // layers: [openStreetMapStandard], // sett your default map in here
+        layers: [openStreetMapStandard], // sett your default map in here
         // layers: [openStreetMapStandard_Basic_V2], // sett your default map in here
-        layers: [kartenaBasemap], // sett your default map in here
+        // layers: [kartenaBasemap], // sett your default map in here
         // crs: L.CRS.EPSG3857,
-        crs: crs
+        // crs: crs
 
     });
 
-    mymap.setView([57.704, 11.965], 13);
+    // mymap.setView([57.704, 11.965], 13);
 
 
     // leaflet basemaps object
@@ -388,4 +388,23 @@ function init() {
     };
 
     fetchWFS(WFSURL, 'Water Features of Australia')
+
+    // leaflet fraw plugin
+    var drawnItems = new L.FeatureGroup();
+    mymap.addLayer(drawnItems);
+    var drawControl = new L.Control.Draw({
+        position: 'topright',
+        draw: {
+            marker: true
+        },
+        edit: {
+            featureGroup: drawnItems,
+            edit: true
+        }
+    });
+    mymap.addControl(drawControl);
+
+    mymap.on('draw:created', function(e){
+        drawnItems.addLayer(e.layer)
+    })
 }
